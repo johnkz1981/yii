@@ -2,11 +2,49 @@
 
 namespace app\models;
 
-use yii\base\Model;
+use Yii;
 
-class Product extends Model
+/**
+ * This is the model class for table "product".
+ *
+ * @property int $id
+ * @property string $name
+ * @property int $price
+ * @property string $category
+ * @property int $created_at
+ */
+class Product extends \yii\db\ActiveRecord
 {
-    public $id;
-    public $name;
-    public $price;
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['price', 'created_at'], 'integer'],
+            [['name', 'category'], 'string', 'max' => 50],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Name',
+            'price' => 'Price',
+            'category' => 'Category',
+            'created_at' => 'Created At',
+        ];
+    }
 }
