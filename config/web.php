@@ -52,7 +52,10 @@ $config = [
       'rules' => [
       ],
     ],
-    'test' => \app\components\TestService::class
+    'test' => [
+      'class' => \app\components\TestService::class,
+      'prop' => 'myProp'
+    ]
   ],
   'params' => $params,
 ];
