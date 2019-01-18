@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attribute' => 'Наименование',
         'value' => function($model) {
           return
-            Html::a(mb_strtoupper($model->name), ["product/view?id={$model->id}"], ['class' => 'btn btn-success'])
+            Html::a(mb_strtoupper($model->name), ['view', 'id' => $model->id], ['class' => 'btn btn-success'])
           ;
         },
         'format' => 'html'

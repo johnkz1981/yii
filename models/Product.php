@@ -15,36 +15,41 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName()
-    {
-        return 'product';
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function tableName()
+  {
+    return 'product';
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['price', 'created_at'], 'integer'],
-            [['name', 'category'], 'string', 'max' => 50],
-        ];
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function rules()
+  {
+    return [
+      [['price', 'created_at'], 'integer'],
+      [['name', 'category'], 'string', 'max' => 20],
+      [['name'], 'filter', 'filter' => function ($value) {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'price' => 'Price',
-            'category' => 'Category',
-            'created_at' => 'Created At',
-        ];
-    }
+        $value = trim($value);
+        return strip_tags($value);
+      }],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function attributeLabels()
+  {
+    return [
+      'id' => 'ID',
+      'name' => 'Name',
+      'price' => 'Price',
+      'category' => 'Category',
+      'created_at' => 'Created At',
+    ];
+  }
 }
