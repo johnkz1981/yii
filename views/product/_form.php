@@ -12,9 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->dropDownList(['first' => 111, 'second' => 222, 'third' => 333]) ?>
 
-    <?= $form->field($model, 'price')->textInput() ?>
+    <?= $form->field($model, 'price')->dropDownList([100 => 'low', 200 => 'high'])->hint('Цена') ?>
 
     <?= $form->field($model, 'category')->textInput(['maxlength' => true]) ?>
 
