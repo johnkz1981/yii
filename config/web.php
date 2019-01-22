@@ -42,6 +42,13 @@ $config = [
           'class' => 'yii\log\FileTarget',
           'levels' => ['error', 'warning'],
         ],
+        [
+          'class' => 'yii\log\FileTarget',
+          'logFile' => '@runtime/logs/pay.log',
+          'levels' => ['info'],
+          'categories' => ['pay'],
+          'logVars' => ['_COOKIE']
+        ],
       ],
     ],
     'db' => $db,
