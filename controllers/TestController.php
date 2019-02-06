@@ -6,6 +6,7 @@ use app\models\Product;
 use app\models\Task;
 use app\models\User;
 use yii\db\Query;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -13,30 +14,55 @@ use app\components\TestService;
 
 class TestController extends Controller
 {
+  public function behaviors()
+  {
+    return [
+      'access' => [
+        'class' => AccessControl::className(),
+        // 'only' => ['logout'],
+        'rules' => [
+          [
+            // 'actions' => ['logout'],
+            'allow' => true,
+            'roles' => ['@'],
+          ],
+        ],
+      ],
+    ];
+  }
+
   public function actionIndex()
   {
     $testView = \Yii::$app->test->run();
 
-    $model = User::findOne(2);
-    $task = Task::findOne(3);
+    /*$user = User::findOne(29);
+    $user->username = 'JohnKZ6';
+    $user->password = '1010';
 
-    $model->link('sharedTasks', $task);
+    $user->save();
 
-    /*$task->link('creator', $model);
+    _end($user);*/
 
-    $model = User::findOne(3);
+    $user = User::findByUsername('ivan2');
+    _end($user->validatePassword('4565'));
 
-    _end($model->getSharedTasks()->all());
+    /*$user = User::findOne(18);
+    $user->username = 'DDD';
+    $user->save();
+    _end($user);*/
 
-    foreach (User::findAll([1, 3, 5]) as $model) {
-      $model->createdTasks;
-    }
+    $task = Task::findOne(5);
+    $task->title = 'retewrt3';
+    $task->description = 'desc werwer2';
+    $task->save();
+    _end($task);
+    // $user->touch('sdfgsd');
 
-    _end($model);*/
+    // _end($user->getErrors());
 
-    return $this->render('index', [
+    /*return $this->render('index', [
       'data' => $testView,
-      'model' => $model
-    ]);
+      // 'model' => $model
+    ]);*/
   }
 }
