@@ -8,6 +8,7 @@ use app\models\User;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use app\components\TestService;
@@ -35,28 +36,9 @@ class TestController extends Controller
   {
     $testView = \Yii::$app->test->run();
 
-    /*$user = User::findOne(29);
-    $user->username = 'JohnKZ6';
-    $user->password = '1010';
+    \Yii::setAlias('tmp', '/tmp/sdfsdf');
 
-    $user->save();
-
-    _end($user);*/
-
-    $user = User::findByUsername('ivan2');
-    _end($user->validatePassword('4565'));
-
-    /*$user = User::findOne(18);
-    $user->username = 'DDD';
-    $user->save();
-    _end($user);*/
-
-    $task = Task::findOne(5);
-    $task->title = 'retewrt3';
-    $task->description = 'desc werwer2';
-    $task->save();
-    _end($task);
-    // $user->touch('sdfgsd');
+    return \Yii::getAlias('@tmp/web/index.php');
 
     // _end($user->getErrors());
 

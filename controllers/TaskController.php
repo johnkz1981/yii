@@ -47,6 +47,44 @@ class TaskController extends Controller
   }
 
   /**
+   * Lists all Task models.
+   * @return mixed
+   */
+  public function actionShared()
+  {
+    $query = Task::find()
+      ->byCreator(yii::$app->user->id)
+      ->innerJoinWith(Task::RELATION_TASK_USERS);
+
+    $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+    ]);
+
+    return $this->render('shared', [
+      'dataProvider' => $dataProvider,
+    ]);
+  }
+
+  /**
+   * Lists all Task models.
+   * @return mixed
+   */
+  public function actionAccessed()
+  {
+    $query = Task::find()
+      ->innerJoinWith(Task::RELATION_TASK_USERS)
+      ->where(['user_id' => Yii::$app->user->id]);
+
+    $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+    ]);
+
+    return $this->render('accessed', [
+      'dataProvider' => $dataProvider,
+    ]);
+  }
+
+  /**
    * Displays a single Task model.
    * @param integer $id
    * @return mixed
@@ -69,7 +107,9 @@ class TaskController extends Controller
     $model = new Task();
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->id]);
+
+      yii::$app->session->setFlash('success', 'Успешно создали задачу!');
+      return $this->redirect(['my']);
     }
 
     return $this->render('create', [
@@ -88,8 +128,14 @@ class TaskController extends Controller
   {
     $model = $this->findModel($id);
 
+    if($model->creator_id !== Yii::$app->user->id){
+
+      throw new ForbiddenHttpException();
+    }
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->id]);
+
+      yii::$app->session->setFlash('success', 'Успешно обновили задачу!');
+      return $this->redirect(['my']);
     }
 
     return $this->render('update', [
@@ -106,9 +152,16 @@ class TaskController extends Controller
    */
   public function actionDelete($id)
   {
-    $this->findModel($id)->delete();
+    $model = $this->findModel($id);
 
-    return $this->redirect(['index']);
+    if($model->creator_id !== Yii::$app->user->id){
+
+      throw new ForbiddenHttpException();
+    }
+    $model->delete();
+
+    yii::$app->session->setFlash('success', 'Успешно удалили задачу!');
+    return $this->redirect(['my']);
   }
 
   /**

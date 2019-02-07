@@ -57,6 +57,8 @@ $config = [
       'enablePrettyUrl' => true,
       'showScriptName' => false,
       'rules' => [
+        'tasks' => 'task/my',
+        '<controller:[\w-]+>/<id:\d+>' => '<controller>/view'
       ],
     ],
     'test' => [
