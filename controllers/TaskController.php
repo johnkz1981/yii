@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Task;
 use yii\data\ActiveDataProvider;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -92,8 +93,17 @@ class TaskController extends Controller
    */
   public function actionView($id)
   {
+    $query = Task::find()
+      ->byCreator(yii::$app->user->id)
+      ->innerJoinWith(Task::RELATION_TASK_USERS);
+
+    $dataProvider = new ActiveDataProvider([
+      'query' => $query,
+    ]);
+
     return $this->render('view', [
       'model' => $this->findModel($id),
+      'dataProvider' => $dataProvider
     ]);
   }
 
